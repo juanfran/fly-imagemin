@@ -1,29 +1,30 @@
-const Imagemin = require("imagemin")
+var imagemin = require("imagemin")
+var imageminGifsicle = require('imagemin-gifsicle')
+var imageminJpegtran = require('imagemin-jpegtran')
+var imageminOptipng = require('imagemin-optipng')
+var imageminSvgo = require('imagemin-svgo')
 
-let min = function(data, options, cb) {
-  let imagemin = new Imagemin()
-        .src(data)
-        .use(Imagemin.gifsicle({interlaced: options.interlaced}))
-        .use(Imagemin.jpegtran({progressive: options.progressive}))
-        .use(Imagemin.optipng({optimizationLevel: options.optimizationLevel}))
-        .use(Imagemin.svgo({
-          plugins: options.svgoPlugins || [],
-          multipass: options.multipass
-        }))
+var min = function(data, options, cb) {
+  var plugins = options.plugins || [
+    imageminGifsicle(),
+    imageminJpegtran(),
+    imageminOptipng(),
+    imageminSvgo()
+  ]
 
-  imagemin.run((err, files) => {
-    if (err) {
-      console.error(`imagemin error in ${err}`)
-
-      return
-    }
-
-    cb(null, {code: files[0].contents})
+  imagemin.buffer(data, {
+      plugins: plugins
   })
+    .then(function(newdata) {
+      cb(null, {code: newdata})
+    })
+    .catch(function(err) {
+      console.error(`imagemin error in ${err}`)
+    })
 }
 
-export default function () {
-  this.filter("imagemin", (data, options) => {
+module.exports = function () {
+  this.filter("imagemin", function(data, options) {
     return this.defer(min)(data, options)
   })
 }
