@@ -21,47 +21,19 @@ npm install -D fly-imagemin
 export default function* () {
   yield this
     .source("image.jpg")
-    .imagemin({
-      progressive: true
-    })
+    .imagemin()
     .target("result")
 }
 ```
 
-#### options
+### Options
 
-##### optimizationLevel *(png)*
+#### plugins
 
-- Type: `number`
-- Default: `3`
-
-##### progressive *(jpg)*
-
-- Type: `boolean`
-- Default: `false`
-
-##### interlaced *(gif)*
-
-- Type: `boolean`
-- Default: `false`
-
-##### multipass *(svg)*
-
-- Type: `boolean`
-- Default: `false`
-
-##### svgoPlugins *(svg)*
-
-- Type: `array`
-- Default: `[]`
-
-##### use
-
-- Type: `array`
-- Default: `null`
+Type: `Array`<br>
+Default: `[imagemin.gifsicle(), imagemin.jpegtran(), imagemin.optipng(), imagemin.svgo()]`
 
 Additional [plugins](https://www.npmjs.com/browse/keyword/imageminplugin) to use with imagemin.
-
 
 ## License
 
