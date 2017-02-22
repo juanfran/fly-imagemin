@@ -16,15 +16,18 @@ var min = function(data, options, cb) {
       plugins: plugins
   })
     .then(function(newdata) {
-      cb(null, {code: newdata})
+      cb(null, newdata)
     })
     .catch(function(err) {
       console.error(`imagemin error in ${err}`)
     })
 }
 
-module.exports = function () {
-  this.filter("imagemin", function(data, options) {
-    return this.defer(min)(data, options)
+module.exports = function (fly, utils) {
+  var minAsync = utils.promisify(min)
+
+  fly.plugin("imagemin", { every: true }, function * (file, opts) {
+    const data = yield minAsync(file.data, opts)
+    file.data = data
   })
 }
