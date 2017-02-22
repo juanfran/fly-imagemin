@@ -18,8 +18,8 @@ npm install -D fly-imagemin
 ## Usage
 
 ```js
-export default function* () {
-  yield this
+export default function* (fly) {
+  yield fly
     .source("image.jpg")
     .imagemin()
     .target("result")
