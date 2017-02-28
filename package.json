@@ -1,6 +1,6 @@
 {
   "name": "fly-imagemin",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "Minify PNG, JPEG, GIF and SVG images with fly",
   "license": "MIT",
   "repository": "https://github.com/juanfran/fly-imagemin",
